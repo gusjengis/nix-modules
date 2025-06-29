@@ -17,7 +17,7 @@
     home.activation.symlinkWofiConf = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       default_conf_dir="/etc/nix-modules/homeManagerModules/config_files/wofi/"
       home_manager_conf_dir="$HOME/.home-manager/config_files/wofi"
-      target_conf_dir="~/.config/wofi"
+      target_conf_dir="$HOME/.config/wofi"
 
       # Check if target dir exists and has files
       if [ ! -d "$home_manager_conf_dir" ] || [ -z "$(ls -A "$home_manager_conf_dir" 2>/dev/null)" ]; then
