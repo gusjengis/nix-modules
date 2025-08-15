@@ -34,8 +34,7 @@
       # Ensure the config dir exists
       mkdir -p "$target_conf_dir"
 
-      ln -sf $home_manager_conf_dir/config $target_conf_dir/config
-      ln -sf $home_manager_conf_dir/config.json $target_conf_dir/config.json
+      ln -sf $home_manager_conf_dir/config.json $target_conf_dir/config.jsonc
       ln -sf $home_manager_conf_dir/style.css $target_conf_dir/style.css
     '';
   };
