@@ -11,6 +11,6 @@
   };
 
   config = lib.mkIf config.login.gnome.enable {
-    services.xserver.displayManager.gdm.enable = true;
+    services.displayManager.gdm.enable = true;
   };
 }
