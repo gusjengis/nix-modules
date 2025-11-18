@@ -22,8 +22,8 @@
 
   grub.enable = lib.mkDefault true;
   nvidia.enable = lib.mkDefault true;
-  login.gnome.enable = lib.mkDefault true;
-  gnome.enable = lib.mkDefault true;
+  login.gnome.enable = lib.mkDefault false;
+  gnome.enable = lib.mkDefault false;
   hyprland.enable = lib.mkDefault true;
   nvim.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
@@ -46,6 +46,7 @@
     fragment-mono
     helvetica-neue-lt-std
   ];
+  networking.networkmanager.enable = true;
   networking.firewall = {
     allowedTCPPortRanges = [
       {
