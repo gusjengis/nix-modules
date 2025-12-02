@@ -95,7 +95,6 @@
   programs.nix-ld.enable = true;
   virtualisation.docker.enable = true;
   programs.dconf.enable = true;
-  services.udev.packages = [ pkgs.android-udev-rules ];
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
   services.pulseaudio.enable = false;
