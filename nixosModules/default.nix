@@ -106,7 +106,6 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  programs.file-roller.enable = true;
   xdg.portal.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   services.gnome.core-apps.enable = false;
