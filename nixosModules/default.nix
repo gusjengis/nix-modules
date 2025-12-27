@@ -108,4 +108,5 @@
   xdg.portal.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   services.gnome.core-apps.enable = false;
+  services.flatpak.enable = true;
 }
