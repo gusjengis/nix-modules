@@ -16,6 +16,7 @@
     ./desktop_env/login.nix
     ./software/nvim.nix
     ./software/git.nix
+    ./software/tailscale.nix
     ./users.nix
   ];
 
