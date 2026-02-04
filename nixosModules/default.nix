@@ -32,6 +32,7 @@
     "nix-command"
     "flakes"
   ];
+  nix.settings.warn-dirty = false;
 
   services.getty.autologinUser = "gusjengis";
   services.gvfs.enable = true;
