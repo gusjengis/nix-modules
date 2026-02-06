@@ -111,4 +111,17 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   services.gnome.core-apps.enable = false;
   services.flatpak.enable = true;
+
+  # turn on ssh!
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+    # settings = {
+    #   # PasswordAuthentication = true;
+    #   AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
+    #   UseDns = true;
+    #   X11Forwarding = false;
+    #   # PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
+    # };
+  };
 }
