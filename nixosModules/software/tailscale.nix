@@ -49,7 +49,7 @@
         exit 1
       fi
 
-      ${tailscale}/bin/tailscale up -authkey $TAILSCALE_AUTH_KEY
+      ${tailscale}/bin/tailscale up -authkey $TAILSCALE_AUTH_KEY --ssh --accept-dns=true
     '';
   };
 }
