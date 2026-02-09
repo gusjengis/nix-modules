@@ -94,7 +94,6 @@
     skia
     xwayland-satellite
     waypipe
-    xorg.xauth
   ];
   programs.nix-ld.enable = true;
   virtualisation.docker.enable = true;
@@ -123,7 +122,7 @@
       2222
     ];
     settings = {
-      X11Forwarding = true;
+      X11Forwarding = false;
     };
     # settings = {
     #   # PasswordAuthentication = true;
