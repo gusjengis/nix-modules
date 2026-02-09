@@ -69,6 +69,7 @@
       }
     ];
     allowedTCPPorts = [
+      2222
       48010
     ];
   };
@@ -114,7 +115,10 @@
   # turn on ssh!
   services.openssh = {
     enable = true;
-    ports = [ 22 ];
+    ports = [
+      22
+      2222
+    ];
     # settings = {
     #   # PasswordAuthentication = true;
     #   AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
