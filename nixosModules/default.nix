@@ -94,6 +94,7 @@
     libxkbcommon
     libGL
     skia
+    xwayland-satellite
   ];
   programs.nix-ld.enable = true;
   virtualisation.docker.enable = true;
