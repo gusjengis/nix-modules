@@ -69,7 +69,6 @@
       }
     ];
     allowedTCPPorts = [
-      2222
       48010
     ];
   };
@@ -119,7 +118,6 @@
     enable = true;
     ports = [
       22
-      2222
     ];
     settings = {
       X11Forwarding = false;
