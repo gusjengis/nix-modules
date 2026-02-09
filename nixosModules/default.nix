@@ -94,6 +94,7 @@
     skia
     xwayland-satellite
     waypipe
+    xorg.xauth
     (writeShellScriptBin "waypipe-remote" ''
       export XDG_RUNTIME_DIR="/run/user/$(id -u)"
       export WAYLAND_DISPLAY="waypipe-remote"
@@ -126,6 +127,9 @@
       22
       2222
     ];
+    settings = {
+      X11Forwarding = true;
+    };
     # settings = {
     #   # PasswordAuthentication = true;
     #   AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
@@ -134,4 +138,5 @@
     #   # PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
     # };
   };
+
 }
