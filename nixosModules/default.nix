@@ -95,6 +95,12 @@
     libGL
     skia
     xwayland-satellite
+    waypipe
+    (writeShellScriptBin "waypipe-remote" ''
+      export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+      export WAYLAND_DISPLAY="waypipe-remote"
+      exec waypipe "$@"
+    '')
   ];
   programs.nix-ld.enable = true;
   virtualisation.docker.enable = true;
