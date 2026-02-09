@@ -16,5 +16,8 @@
       "docker"
     ];
     packages = with pkgs; [ home-manager ];
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile /home/gusjengis/.config/secrets/ssh/shared_ed25519.pub)
+    ];
   };
 }
