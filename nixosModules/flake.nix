@@ -25,8 +25,8 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            ./hardware-configuration.nix
-            ./configuration.nix
+            /etc/nixos/hardware-configuration.nix
+            /etc/nixos/configuration.nix
             /etc/nix-modules/nixosModules
             apple-silicon.nixosModules.default
           ];
