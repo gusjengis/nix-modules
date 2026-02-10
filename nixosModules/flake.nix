@@ -28,6 +28,8 @@
             /etc/nixos/hardware-configuration.nix
             /etc/nixos/configuration.nix
             /etc/nix-modules/nixosModules
+          ]
+          ++ lib.optionals (system == "aarch64-linux") [
             apple-silicon.nixosModules.default
           ];
         };
