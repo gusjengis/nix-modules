@@ -14,7 +14,7 @@
 
     environment.systemPackages = with pkgs; [
       neovim
-      nixfmt-rfc-style
+      nixfmt
       wl-clipboard
       ripgrep
       fzf

@@ -21,13 +21,13 @@
   ];
 
   grub.enable = lib.mkDefault true;
-  nvidia.enable = lib.mkDefault true;
+  nvidia.enable = lib.mkDefault false;
   login.gnome.enable = lib.mkDefault false;
   gnome.enable = lib.mkDefault false;
   hyprland.enable = lib.mkDefault true;
   nvim.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
-  steam.enable = lib.mkDefault true;
+  steam.enable = lib.mkDefault false;
 
   nix.settings.experimental-features = [
     "nix-command"
