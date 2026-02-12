@@ -1,9 +1,12 @@
 {
-  config,
   pkgs,
+  lib,
   ...
 }:
 
+let
+  sharedKeyPath = "/home/gusjengis/.config/secrets/ssh/shared_ed25519.pub";
+in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.gusjengis = {
@@ -16,8 +19,8 @@
       "docker"
     ];
     packages = with pkgs; [ home-manager ];
-    openssh.authorizedKeys.keys = [
-      (builtins.readFile /home/gusjengis/.config/secrets/ssh/shared_ed25519.pub)
+    openssh.authorizedKeys.keys = lib.optionals (builtins.pathExists sharedKeyPath) [
+      (lib.strings.removeSuffix "\n" (builtins.readFile sharedKeyPath))
     ];
   };
 }
