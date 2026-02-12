@@ -39,14 +39,6 @@
   services.gvfs.enable = true;
   services.udisks2.enable = true;
   time.timeZone = "America/Los_Angeles";
-  fonts.packages = with pkgs; [
-    cozette
-    carlito
-    commit-mono
-    nerd-fonts.meslo-lg
-    fragment-mono
-    helvetica-neue-lt-std
-  ];
   networking.networkmanager.enable = true;
   networking.firewall = {
     allowedTCPPortRanges = [
@@ -82,21 +74,7 @@
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
   nixpkgs.config.allowUnfree = true;
   systemd.services."NetworkManager-wait-online".enable = false;
-  environment.systemPackages = with pkgs; [
-    wayland
-    vulkan-loader
-    egl-wayland
-    libgbm
-    libglvnd
-    wayland-protocols
-    libxkbcommon
-    libGL
-    skia
-    xwayland-satellite
-    waypipe
-  ];
   programs.nix-ld.enable = true;
-  virtualisation.docker.enable = true;
   programs.dconf.enable = true;
   services.avahi.publish.enable = true;
   services.avahi.publish.userServices = true;
@@ -110,7 +88,6 @@
   };
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   services.gnome.core-apps.enable = false;
-  services.flatpak.enable = true;
 
   # turn on ssh!
   services.openssh = {
