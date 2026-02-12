@@ -44,7 +44,7 @@
         source /home/gusjengis/.config/secrets/api_keys/env_vars
       fi
 
-      if [ -z "${TAILSCALE_AUTH_KEY:-}" ]; then
+      if [ -z "''${TAILSCALE_AUTH_KEY:-}" ]; then
         echo "TAILSCALE_AUTH_KEY missing; skipping tailscale up"
         exit 0
       fi
