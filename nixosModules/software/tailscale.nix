@@ -44,12 +44,12 @@
         source /home/gusjengis/.config/secrets/api_keys/env_vars
       fi
 
-      if [ -z "$TAILSCALE_AUTH_KEY" ]; then
-        echo "ERROR: TAILSCALE_AUTH_KEY not found in env_vars or secrets file doesn't exist"
-        exit 1
+      if [ -z "${TAILSCALE_AUTH_KEY:-}" ]; then
+        echo "TAILSCALE_AUTH_KEY missing; skipping tailscale up"
+        exit 0
       fi
 
-      ${tailscale}/bin/tailscale up -authkey $TAILSCALE_AUTH_KEY
+      ${tailscale}/bin/tailscale up -authkey "$TAILSCALE_AUTH_KEY"
       # --ssh --accept-dns=true
     '';
   };
