@@ -28,5 +28,8 @@
       kitty
     ];
 
+    xdg.portal.enable = true;
+    environment.sessionVariables.XDG_RUNTIME_DIR = "/run/user/$UID";
+
   };
 }

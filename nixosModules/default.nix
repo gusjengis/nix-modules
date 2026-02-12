@@ -106,9 +106,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  xdg.portal.enable = true;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-  environment.sessionVariables.XDG_RUNTIME_DIR = "/run/user/$UID";
   services.gnome.core-apps.enable = false;
   services.flatpak.enable = true;
 
