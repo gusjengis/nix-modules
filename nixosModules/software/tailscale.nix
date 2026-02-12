@@ -10,6 +10,11 @@
     openFirewall = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    xwayland-satellite
+    waypipe
+  ];
+
   # create a oneshot job to authenticate to Tailscale
   systemd.services.tailscale-autoconnect = {
     description = "Automatic connection to Tailscale";
