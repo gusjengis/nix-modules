@@ -20,7 +20,7 @@
   ];
 
   grub.enable = lib.mkDefault true;
-  nvidia.enable = lib.mkDefault true;
+  nvidia.enable = lib.mkDefault false;
   login.gnome.enable = lib.mkDefault false;
   gnome.enable = lib.mkDefault false;
   hyprland.enable = lib.mkDefault true;
