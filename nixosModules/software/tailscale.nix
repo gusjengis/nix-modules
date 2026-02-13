@@ -13,7 +13,12 @@
   environment.systemPackages = with pkgs; [
     xwayland-satellite
     waypipe
+    wofi
   ];
+
+  # graphics so remote guis work
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
 
   # create a oneshot job to authenticate to Tailscale
   systemd.services.tailscale-autoconnect = {
@@ -53,6 +58,7 @@
         echo "TAILSCALE_AUTH_KEY missing; skipping tailscale up"
         exit 0
       fi
+
 
       ${tailscale}/bin/tailscale up -authkey "$TAILSCALE_AUTH_KEY"
       # --ssh --accept-dns=true
