@@ -42,11 +42,9 @@
     services.flatpak.enable = true;
 
     fonts.packages = with pkgs; [
-      cozette
       carlito
       commit-mono
       nerd-fonts.meslo-lg
-      fragment-mono
       helvetica-neue-lt-std
     ];
   };
