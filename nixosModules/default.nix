@@ -26,6 +26,7 @@
   hyprland.enable = lib.mkDefault true;
   nvim.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
+  tailscale.enable = lib.mkDefault true;
 
   nix.settings.experimental-features = [
     "nix-command"
