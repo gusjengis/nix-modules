@@ -29,6 +29,7 @@
   git.enable = lib.mkDefault true;
   steam.enable = lib.mkDefault false;
   tailscale.enable = lib.mkDefault true;
+  homeAssistant.enable = lib.mkDefault false;
 
   nix.settings.experimental-features = [
     "nix-command"
