@@ -17,6 +17,7 @@
     ./software/nvim.nix
     ./software/git.nix
     ./software/tailscale.nix
+    ./software/home_assistant.nix
     ./users.nix
   ];
 
