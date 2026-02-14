@@ -24,6 +24,12 @@
         # Includes dependencies for a basic setup
         # https://www.home-assistant.io/integrations/default_config/
         default_config = { };
+        network = {
+          bind_interfaces = [
+            "wlp4s0"
+            "tailscale0"
+          ];
+        };
       };
     };
 
