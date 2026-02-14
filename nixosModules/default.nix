@@ -27,6 +27,7 @@
   nvim.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
   tailscale.enable = lib.mkDefault true;
+  homeAssistant.enable = lib.mkDefault false;
 
   nix.settings.experimental-features = [
     "nix-command"
