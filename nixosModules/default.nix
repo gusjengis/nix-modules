@@ -16,6 +16,7 @@
     ./software/nvim.nix
     ./software/git.nix
     ./software/tailscale.nix
+    ./software/vms.nix
     ./software/home_assistant.nix
     ./users.nix
   ];
@@ -29,6 +30,7 @@
   git.enable = lib.mkDefault true;
   tailscale.enable = lib.mkDefault true;
   homeAssistant.enable = lib.mkDefault false;
+  virtual-machines.enable = lib.mkDefault false;
 
   nix.settings.experimental-features = [
     "nix-command"
