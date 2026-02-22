@@ -24,7 +24,7 @@
 
     # graphics so remote guis work
     hardware.graphics.enable = true;
-    hardware.graphics.enable32Bit = true;
+    hardware.graphics.enable32Bit = pkgs.stdenv.hostPlatform.isx86;
 
     # create a oneshot job to authenticate to Tailscale
     systemd.services.tailscale-autoconnect = {
