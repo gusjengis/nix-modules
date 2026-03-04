@@ -16,6 +16,7 @@
     ./software/steam.nix
     ./software/nvim.nix
     ./software/git.nix
+    ./software/vial.nix
     ./software/tailscale.nix
     ./software/vms.nix
     ./software/home_assistant.nix
@@ -29,6 +30,7 @@
   hyprland.enable = lib.mkDefault true;
   nvim.enable = lib.mkDefault true;
   git.enable = lib.mkDefault true;
+  vial.enable = lib.mkDefault true;
   steam.enable = lib.mkDefault false;
   tailscale.enable = lib.mkDefault true;
   homeAssistant.enable = lib.mkDefault false;
@@ -93,24 +95,6 @@
   };
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   services.gnome.core-apps.enable = false;
-
-  # turn on ssh!
-  services.openssh = {
-    enable = true;
-    ports = [
-      22
-    ];
-    settings = {
-      X11Forwarding = false;
-    };
-    # settings = {
-    #   # PasswordAuthentication = true;
-    #   AllowUsers = null; # Allows all users by default. Can be [ "user1" "user2" ]
-    #   UseDns = true;
-    #   X11Forwarding = false;
-    #   # PermitRootLogin = "prohibit-password"; # "yes", "without-password", "prohibit-password", "forced-commands-only", "no"
-    # };
-  };
 
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend";
