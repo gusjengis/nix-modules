@@ -45,6 +45,8 @@
   services.getty.autologinUser = "gusjengis";
   services.gvfs.enable = true;
   services.udisks2.enable = true;
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
   time.timeZone = "America/Los_Angeles";
   networking.networkmanager.enable = true;
   networking.firewall = {
