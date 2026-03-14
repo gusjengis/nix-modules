@@ -108,4 +108,5 @@
     nerd-fonts.meslo-lg
     helvetica-neue-lt-std
   ];
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
 }
