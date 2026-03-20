@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
+      url = "github:nix-community/nixos-apple-silicon";
     };
     hyprland = {
       url = "github:hyprwm/Hyprland";
@@ -21,7 +21,7 @@
     }@inputs:
     let
       lib = nixpkgs.lib;
-      system = builtins.currentSystem;
+      system = "aarch64-linux";
     in
     {
       nixosConfigurations = {
