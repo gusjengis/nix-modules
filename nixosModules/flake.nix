@@ -16,12 +16,14 @@
     {
       self,
       nixpkgs,
-      apple-silicon,
       ...
     }@inputs:
     let
       lib = nixpkgs.lib;
-      system = "aarch64-linux";
+      hardwareConfiguration = /etc/nixos/hardware-configuration.nix;
+      hardwareConfigText = builtins.readFile hardwareConfiguration;
+      system =
+        if lib.hasInfix ''"aarch64-linux"'' hardwareConfigText then "aarch64-linux" else "x86_64-linux";
     in
     {
       nixosConfigurations = {
@@ -29,12 +31,9 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
-            /etc/nixos/hardware-configuration.nix
+            hardwareConfiguration
             /etc/nixos/configuration.nix
             /etc/nix-modules/nixosModules
-          ]
-          ++ lib.optionals (system == "aarch64-linux") [
-            apple-silicon.nixosModules.default
           ];
         };
       };
