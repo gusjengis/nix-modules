@@ -107,6 +107,31 @@
       HandleLidSwitchDocked = "ignore";
     };
 
+    environment.systemPackages = with pkgs; [
+      ntfs3g
+    ];
+
+    security.polkit.enable = true;
+    security.polkit.extraConfig = ''
+      polkit.addRule(function(action, subject) {
+        var allowed = [
+          "org.freedesktop.udisks2.filesystem-mount",
+          "org.freedesktop.udisks2.filesystem-mount-system",
+          "org.freedesktop.udisks2.filesystem-unmount-others",
+          "org.freedesktop.udisks2.encrypted-unlock",
+          "org.freedesktop.udisks2.encrypted-unlock-system"
+        ];
+        if (
+          allowed.indexOf(action.id) >= 0 &&
+          subject.active &&
+          subject.local &&
+          subject.isInGroup("wheel")
+        ) {
+          return polkit.Result.YES;
+        }
+      });
+    '';
+
     fonts.packages = with pkgs; [
       carlito
       commit-mono
