@@ -7,7 +7,7 @@
       url = "github:nix-community/nixos-apple-silicon";
     };
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/Hyprland/v0.55.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
