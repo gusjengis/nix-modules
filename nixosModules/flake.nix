@@ -30,7 +30,9 @@
       nixosConfigurations = {
         nixos = lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit inputs; };
+          specialArgs = {
+            inherit inputs system;
+          };
           modules =
             lib.optionals hasHardwareConfiguration [
               hardwareConfiguration

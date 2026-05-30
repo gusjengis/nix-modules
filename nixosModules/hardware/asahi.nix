@@ -1,7 +1,12 @@
-{ inputs, ... }:
+{
+  inputs,
+  lib,
+  system,
+  ...
+}:
 
 {
-  imports = [
+  imports = lib.optionals (system == "aarch64-linux") [
     inputs.apple-silicon.nixosModules.default
   ];
 }
