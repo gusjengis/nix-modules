@@ -12,6 +12,7 @@
   };
 
   imports = [
+    ./hardware/asahi.nix
     ./hardware/gpu_drivers.nix
     ./hardware/grub.nix
     ./desktop_env/hyprland.nix
