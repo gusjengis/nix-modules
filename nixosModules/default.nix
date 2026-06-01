@@ -24,6 +24,7 @@
     ./software/tailscale.nix
     ./software/vms.nix
     ./software/home_assistant.nix
+    ./software/vnc.nix
     ./users.nix
   ];
 
@@ -39,6 +40,7 @@
     tailscale.enable = lib.mkDefault true;
     homeAssistant.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
+    vnc.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
 
     nix.settings.experimental-features = [
       "nix-command"
@@ -136,9 +138,28 @@
     fonts.packages = with pkgs; [
       carlito
       commit-mono
+      dejavu_fonts
       nerd-fonts.meslo-lg
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
       helvetica-neue-lt-std
     ];
+    fonts.fontconfig.defaultFonts = {
+      serif = [
+        "Noto Serif"
+        "DejaVu Serif"
+      ];
+      sansSerif = [
+        "Noto Sans"
+        "DejaVu Sans"
+      ];
+      monospace = [
+        "CommitMono Nerd Font"
+        "DejaVu Sans Mono"
+      ];
+      emoji = [ "Noto Color Emoji" ];
+    };
     boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_6_12;
   };
 }
