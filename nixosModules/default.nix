@@ -22,6 +22,7 @@
     ./software/git.nix
     ./software/vial.nix
     ./software/tailscale.nix
+    ./software/sunshine.nix
     ./software/vms.nix
     ./software/home_assistant.nix
     ./software/vnc.nix
@@ -38,6 +39,7 @@
     git.enable = lib.mkDefault true;
     vial.enable = lib.mkDefault true;
     tailscale.enable = lib.mkDefault true;
+    sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
     vnc.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
