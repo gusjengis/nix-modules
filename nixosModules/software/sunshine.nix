@@ -18,7 +18,7 @@ in
       openFirewall = true;
 
       settings = {
-        output_name = "sunshine-stream";
+        output_name = "1";
         sunshine_name = config.networking.hostName;
       };
 
@@ -27,6 +27,7 @@ in
         apps = [
           {
             name = "Desktop";
+            output = "1";
             image-path = "desktop.png";
           }
         ];
