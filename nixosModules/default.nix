@@ -25,6 +25,7 @@
     ./software/sunshine.nix
     ./software/vms.nix
     ./software/home_assistant.nix
+    ./software/music_assistant.nix
     ./software/vnc.nix
     ./users.nix
   ];
@@ -41,6 +42,7 @@
     tailscale.enable = lib.mkDefault true;
     sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
+    musicAssistant.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
     vnc.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
 
