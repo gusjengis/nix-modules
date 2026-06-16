@@ -7,10 +7,10 @@
 
 let
   ytmusicFreeProvider = pkgs.fetchFromGitHub {
-    owner = "sproft";
+    owner = "gusjengis";
     repo = "music-assistant-ytmusic";
-    rev = "20522c3264d7a8bcb9f34c2b25b21b1efd93c087";
-    hash = "sha256-r3opgQGlST2pqca6Nlz2CTZdVGk1wpw6/ia1lZFhW7A=";
+    rev = "959937045b226383b4908640622b010ef8bcf20e";
+    hash = "sha256-au0cGe1FD3JoEUvlD1amJyCY/Ed0M7sh/y2JG2cB/Fk=";
   };
 in
 {
