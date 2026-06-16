@@ -26,6 +26,7 @@
     ./software/vms.nix
     ./software/home_assistant.nix
     ./software/music_assistant.nix
+    (./software + "/josh's_mass.nix")
     ./software/vnc.nix
     ./users.nix
   ];
@@ -43,6 +44,7 @@
     sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
     musicAssistant.enable = lib.mkDefault false;
+    joshsMass.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
     vnc.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
 
