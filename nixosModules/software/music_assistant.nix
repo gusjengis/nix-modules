@@ -40,7 +40,7 @@ in
         Restart = "always";
         RestartSec = 10;
         ExecStartPre = "-${lib.getExe pkgs.docker} rm -f musicassistant";
-        ExecStart = "${lib.getExe pkgs.docker} run --name=musicassistant --rm --pull=missing --network=host --privileged -v music-assistant:/data -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.13/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
+        ExecStart = "${lib.getExe pkgs.docker} run --name=musicassistant --rm --pull=missing --network=host --privileged -v music-assistant:/data -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.14/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
         ExecStop = "${lib.getExe pkgs.docker} stop musicassistant";
         ExecStopPost = "-${lib.getExe pkgs.docker} rm -f musicassistant";
       };
