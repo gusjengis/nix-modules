@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -11,16 +12,23 @@
 
   config = lib.mkIf config.musicAssistant.enable {
     virtualisation.docker.enable = true;
-    virtualisation.oci-containers = {
-      backend = lib.mkForce "docker";
-      containers.musicassistant = {
-        volumes = [ "music-assistant:/data" ];
-        environment.TZ = "America/Los_Angeles";
-        image = "ghcr.io/music-assistant/server:latest"; # Warning: if the tag does not change, the image will not be updated
-        extraOptions = [
-          "--network=host"
-          "--privileged"
-        ];
+
+    systemd.services.musicassistant = {
+      description = "Music Assistant";
+      after = [ "docker.service" "network-online.target" ]
+        ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+      wants = [ "docker.service" "network-online.target" ]
+        ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = {
+        Type = "simple";
+        Restart = "always";
+        RestartSec = 10;
+        ExecStartPre = "-${lib.getExe pkgs.docker} rm -f musicassistant";
+        ExecStart = "${lib.getExe pkgs.docker} run --name=musicassistant --rm --pull=missing --network=host --privileged -v music-assistant:/data -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
+        ExecStop = "${lib.getExe pkgs.docker} stop musicassistant";
+        ExecStopPost = "-${lib.getExe pkgs.docker} rm -f musicassistant";
       };
     };
 

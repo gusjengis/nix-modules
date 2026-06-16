@@ -95,6 +95,15 @@
     systemd.services."NetworkManager-wait-online".enable = false;
     programs.nix-ld.enable = true;
     programs.dconf.enable = true;
+    virtualisation.docker.enable = true;
+    systemd.services.docker.after = [ "network-online.target" ]
+      ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+    systemd.services.docker.wants = [ "network-online.target" ]
+      ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+    systemd.services."podman-homeassistant" = lib.mkIf config.tailscale.enable {
+      after = [ "tailscaled.service" ];
+      wants = [ "tailscaled.service" ];
+    };
     services.avahi.publish.enable = true;
     services.avahi.publish.userServices = true;
     services.pulseaudio.enable = false;
