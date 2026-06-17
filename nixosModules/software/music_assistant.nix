@@ -8,11 +8,11 @@
 let
   resolvConf = pkgs.writeText "music-assistant-resolv.conf" "nameserver 1.1.1.1\nnameserver 8.8.8.8\noptions edns0\n";
 
-  ytmusicFreeProvider = pkgs.fetchFromGitHub {
+  musicAssistantFork = pkgs.fetchFromGitHub {
     owner = "gusjengis";
-    repo = "music-assistant-ytmusic";
-    rev = "d34a40091959e77b4bd07047726de9644b0c3fef";
-    hash = "sha256-VMuRXoaQS+EAlpPBGGT4JoJecIAr/pfyfYFyzIktSfU=";
+    repo = "mass-server";
+    rev = "4a71d241c772fb65b06ef446284675df0b722c2b";
+    hash = "sha256-FlWXQpHM59NoyfVlV/5CTaEwHdTtwXUd5W4K8DBx6/U=";
   };
 in
 {
@@ -42,7 +42,7 @@ in
         Restart = "always";
         RestartSec = 10;
         ExecStartPre = "-${lib.getExe pkgs.docker} rm -f musicassistant";
-        ExecStart = "${lib.getExe pkgs.docker} run --name=musicassistant --rm --pull=missing --network=host --privileged -v music-assistant:/data -v ${resolvConf}:/etc/resolv.conf:ro -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.14/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
+        ExecStart = "${lib.getExe pkgs.docker} run --name=musicassistant --rm --pull=always --network=host --privileged -v music-assistant:/data -v ${resolvConf}:/etc/resolv.conf:ro -v ${musicAssistantFork}/music_assistant:/app/venv/lib/python3.14/site-packages/music_assistant:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
         ExecStop = "${lib.getExe pkgs.docker} stop musicassistant";
         ExecStopPost = "-${lib.getExe pkgs.docker} rm -f musicassistant";
       };
