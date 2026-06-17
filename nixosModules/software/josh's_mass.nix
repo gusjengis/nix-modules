@@ -8,6 +8,12 @@
 let
   tailscaleContainer = "joshs-mass-tailscale";
 
+  resolvConf = pkgs.writeText "joshs-mass-resolv.conf" ''
+    nameserver 1.1.1.1
+    nameserver 8.8.8.8
+    options edns0
+  '';
+
   ytmusicFreeProvider = pkgs.fetchFromGitHub {
     owner = "gusjengis";
     repo = "music-assistant-ytmusic";
@@ -109,8 +115,10 @@ in
             --cap-add=NET_ADMIN \
             --device=/dev/net/tun \
             -v joshs-mass-tailscale:/var/lib/tailscale \
+            -v ${resolvConf}:/etc/resolv.conf:ro \
             -e TS_STATE_DIR=/var/lib/tailscale \
             -e TS_USERSPACE=false \
+            -e "TS_EXTRA_ARGS=--accept-dns=false --netfilter-mode=off" \
             "''${auth_args[@]}" \
             tailscale/tailscale:latest
         ''}";
@@ -158,10 +166,10 @@ in
               exit 1
             fi
 
-            ${lib.getExe pkgs.docker} run --rm --pull=missing --network=container:${tailscaleContainer} --entrypoint /app/venv/bin/python -v joshs-mass:/data -v ${configureSettings}:/configure.py:ro -e MASS_IP="$mass_ip" ghcr.io/music-assistant/server:latest /configure.py
+            ${lib.getExe pkgs.docker} run --rm --pull=missing --network=container:${tailscaleContainer} --entrypoint /app/venv/bin/python -v joshs-mass:/data -v ${configureSettings}:/configure.py:ro -v ${resolvConf}:/etc/resolv.conf:ro -e MASS_IP="$mass_ip" ghcr.io/music-assistant/server:latest /configure.py
           ''}"
         ];
-        ExecStart = "${lib.getExe pkgs.docker} run --name=joshs-mass --rm --pull=missing --network=container:${tailscaleContainer} --privileged -v joshs-mass:/data -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.14/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
+        ExecStart = "${lib.getExe pkgs.docker} run --name=joshs-mass --rm --pull=missing --network=container:${tailscaleContainer} --privileged -v joshs-mass:/data -v ${resolvConf}:/etc/resolv.conf:ro -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.14/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
         ExecStop = "${lib.getExe pkgs.docker} stop joshs-mass";
         ExecStopPost = "-${lib.getExe pkgs.docker} rm -f joshs-mass";
       };
