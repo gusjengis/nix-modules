@@ -9,8 +9,8 @@ let
   ytmusicFreeProvider = pkgs.fetchFromGitHub {
     owner = "gusjengis";
     repo = "music-assistant-ytmusic";
-    rev = "c018b06d39b8bee63178e976ea7bdc608c36a60e";
-    hash = "sha256-TTZzeFPMprVIvQlSpaYDhgvuW6hPVy5KES179raI20A=";
+    rev = "d34a40091959e77b4bd07047726de9644b0c3fef";
+    hash = "sha256-VMuRXoaQS+EAlpPBGGT4JoJecIAr/pfyfYFyzIktSfU=";
   };
 in
 {
