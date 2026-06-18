@@ -22,8 +22,8 @@ let
   musicAssistantFork = pkgs.fetchFromGitHub {
     owner = "gusjengis";
     repo = "mass-server";
-    rev = "44b529fad948fcd4fbc55cc770292cb4ed54e758";
-    hash = "sha256-Ted8EkeEaetbPDr9kh4TiH9H0roUj5JJb2Ee4MQk76A=";
+    rev = "05e796764c526a6a86d1ed4bdf7c48d8862ebe22";
+    hash = "sha256-ilmcIzaBne/29U1WzmZ7vGv9wdJ2MflYI1RCHyvxw6I=";
   };
 
   configureSettings = pkgs.writeText "joshs-mass-configure.py" ''
