@@ -15,8 +15,8 @@ let
   musicAssistantFork = pkgs.fetchFromGitHub {
     owner = "gusjengis";
     repo = "mass-server";
-    rev = "4a71d241c772fb65b06ef446284675df0b722c2b";
-    hash = "sha256-FlWXQpHM59NoyfVlV/5CTaEwHdTtwXUd5W4K8DBx6/U=";
+    rev = "05e796764c526a6a86d1ed4bdf7c48d8862ebe22";
+    hash = "sha256-ilmcIzaBne/29U1WzmZ7vGv9wdJ2MflYI1RCHyvxw6I=";
   };
 in
 {

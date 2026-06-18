@@ -14,11 +14,16 @@ let
     options edns0
   '';
 
-  ytmusicFreeProvider = pkgs.fetchFromGitHub {
+  # Pin an image whose baked dependencies match the overlaid Music Assistant
+  # fork. In particular, this digest contains music-assistant-models 1.1.136
+  # and aiohttp 3.14.1, which the fork currently requires.
+  musicAssistantImage = "ghcr.io/music-assistant/server@sha256:c3ae4f8d0a9a6adaa5fabf000e31d0e558c71a6c7321117be3af98e68f4c6e43";
+
+  musicAssistantFork = pkgs.fetchFromGitHub {
     owner = "gusjengis";
-    repo = "music-assistant-ytmusic";
-    rev = "c018b06d39b8bee63178e976ea7bdc608c36a60e";
-    hash = "sha256-TTZzeFPMprVIvQlSpaYDhgvuW6hPVy5KES179raI20A=";
+    repo = "mass-server";
+    rev = "44b529fad948fcd4fbc55cc770292cb4ed54e758";
+    hash = "sha256-Ted8EkeEaetbPDr9kh4TiH9H0roUj5JJb2Ee4MQk76A=";
   };
 
   configureSettings = pkgs.writeText "joshs-mass-configure.py" ''
@@ -166,10 +171,10 @@ in
               exit 1
             fi
 
-            ${lib.getExe pkgs.docker} run --rm --pull=missing --network=container:${tailscaleContainer} --entrypoint /app/venv/bin/python -v joshs-mass:/data -v ${configureSettings}:/configure.py:ro -v ${resolvConf}:/etc/resolv.conf:ro -e MASS_IP="$mass_ip" ghcr.io/music-assistant/server:latest /configure.py
+            ${lib.getExe pkgs.docker} run --rm --pull=missing --network=container:${tailscaleContainer} --entrypoint /app/venv/bin/python -v joshs-mass:/data -v ${configureSettings}:/configure.py:ro -v ${resolvConf}:/etc/resolv.conf:ro -e MASS_IP="$mass_ip" ${musicAssistantImage} /configure.py
           ''}"
         ];
-        ExecStart = "${lib.getExe pkgs.docker} run --name=joshs-mass --rm --pull=missing --network=container:${tailscaleContainer} --privileged -v joshs-mass:/data -v ${resolvConf}:/etc/resolv.conf:ro -v ${ytmusicFreeProvider}/ytmusic_free:/app/venv/lib/python3.14/site-packages/music_assistant/providers/ytmusic_free:ro -e TZ=America/Los_Angeles ghcr.io/music-assistant/server:latest";
+        ExecStart = "${lib.getExe pkgs.docker} run --name=joshs-mass --rm --pull=missing --network=container:${tailscaleContainer} --privileged -v joshs-mass:/data -v ${resolvConf}:/etc/resolv.conf:ro -v ${musicAssistantFork}/music_assistant:/app/venv/lib/python3.14/site-packages/music_assistant:ro -e TZ=America/Los_Angeles ${musicAssistantImage}";
         ExecStop = "${lib.getExe pkgs.docker} stop joshs-mass";
         ExecStopPost = "-${lib.getExe pkgs.docker} rm -f joshs-mass";
       };
