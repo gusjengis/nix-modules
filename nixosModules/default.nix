@@ -27,7 +27,6 @@
     ./software/home_assistant.nix
     ./software/music_assistant.nix
     (./software + "/josh's_mass.nix")
-    ./software/vnc.nix
     ./users.nix
   ];
 
@@ -46,7 +45,6 @@
     musicAssistant.enable = lib.mkDefault false;
     joshsMass.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
-    vnc.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
 
     nix.settings.experimental-features = [
       "nix-command"
@@ -98,10 +96,14 @@
     programs.nix-ld.enable = true;
     programs.dconf.enable = true;
     virtualisation.docker.enable = true;
-    systemd.services.docker.after = [ "network-online.target" ]
-      ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
-    systemd.services.docker.wants = [ "network-online.target" ]
-      ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+    systemd.services.docker.after = [
+      "network-online.target"
+    ]
+    ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
+    systemd.services.docker.wants = [
+      "network-online.target"
+    ]
+    ++ lib.optionals config.tailscale.enable [ "tailscaled.service" ];
     systemd.services."podman-homeassistant" = lib.mkIf config.tailscale.enable {
       after = [ "tailscaled.service" ];
       wants = [ "tailscaled.service" ];
