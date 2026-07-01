@@ -39,7 +39,7 @@
             ]
             ++ [
               /etc/nixos/configuration.nix
-              /etc/nix-modules/nixosModules
+              /etc/nix-modules
             ];
         };
       };
