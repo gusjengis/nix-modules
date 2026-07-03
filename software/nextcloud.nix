@@ -7,23 +7,34 @@
 
 # Nextcloud, serving the shared data drive over the tailnet.
 #
-# - Web UI / apps at https://alpha.tail29bd65.ts.net (TLS via tailscale serve)
+# - Web UI / apps at https://alpha.tail29bd65.ts.net (TLS via tailscale serve,
+#   or public internet access when nextcloud.funnel.enable is set)
 # - App state, database, and secrets live on the RAID mirror in /data/.services
 # - The whole drive is exposed in the web UI as a "/data" folder via the
 #   files_external app. Nextcloud sees the drive through a bindfs view at
 #   /mnt/nextcloud-data that maps gusjengis <-> nextcloud, so files created
 #   from the web UI land on disk as gusjengis:users (same owner the NFS
 #   clients use) and everything stays writable from both sides.
+let
+  nextcloudHostName = "alpha.tail29bd65.ts.net";
+  publicShareSettings = {
+    # Public links should not become permanent internet-published URLs by accident.
+    shareapi_default_expire_date = true;
+    shareapi_expire_after_n_days = 30;
+    shareapi_enforce_expire_date = true;
+  };
+in
 {
   options = {
     nextcloud.enable = lib.mkEnableOption "enables Nextcloud serving /data";
+    nextcloud.funnel.enable = lib.mkEnableOption "publicly exposes Nextcloud with Tailscale Funnel";
   };
 
   config = lib.mkIf config.nextcloud.enable {
     services.nextcloud = {
       enable = true;
       package = pkgs.nextcloud33;
-      hostName = "alpha.tail29bd65.ts.net";
+      hostName = nextcloudHostName;
       https = true;
       datadir = "/data/.services/nextcloud";
       maxUploadSize = "16G";
@@ -37,11 +48,15 @@
       };
 
       settings = {
-        trusted_domains = [ "alpha" ];
+        trusted_domains = [
+          "alpha"
+          nextcloudHostName
+        ];
         # pick up files changed outside nextcloud (NFS writes) on access
         filesystem_check_changes = 1;
         default_phone_region = "US";
-      };
+      }
+      // lib.optionalAttrs config.nextcloud.funnel.enable publicShareSettings;
     };
 
     # database on the mirror too
@@ -120,9 +135,13 @@
       '';
     };
 
-    # HTTPS on the tailnet via tailscale serve (cert managed by tailscale)
+    # HTTPS via Tailscale: private tailnet-only Serve by default, public Funnel when enabled.
     systemd.services.tailscale-serve-nextcloud = {
-      description = "Serve Nextcloud over HTTPS on the tailnet";
+      description =
+        if config.nextcloud.funnel.enable then
+          "Serve Nextcloud over public HTTPS with Tailscale Funnel"
+        else
+          "Serve Nextcloud over HTTPS on the tailnet";
       after = [
         "tailscaled.service"
         "nginx.service"
@@ -130,7 +149,11 @@
       requires = [ "tailscaled.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.tailscale}/bin/tailscale serve --https=443 http://127.0.0.1:80";
+        ExecStart =
+          if config.nextcloud.funnel.enable then
+            "${pkgs.tailscale}/bin/tailscale funnel --yes --https=443 http://127.0.0.1:80"
+          else
+            "${pkgs.tailscale}/bin/tailscale serve --https=443 http://127.0.0.1:80";
         Restart = "on-failure";
         RestartSec = 10;
       };
