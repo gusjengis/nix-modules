@@ -31,8 +31,11 @@
       services.nfs.server = {
         enable = true;
         # NFSv4 only; v3 would need rpcbind/mountd and extra ports.
+        # all_squash: this is a single-owner cloud drive, so every access
+        # from every machine maps to gusjengis:users. Keeps ownership
+        # uniform no matter which client or user wrote the file.
         exports = ''
-          /data 100.64.0.0/10(rw,no_subtree_check)
+          /data 100.64.0.0/10(rw,no_subtree_check,all_squash,anonuid=1000,anongid=100)
         '';
       };
 
