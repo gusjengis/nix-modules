@@ -26,6 +26,7 @@
     ./software/vms.nix
     ./software/home_assistant.nix
     ./software/music_assistant.nix
+    ./software/data_drive.nix
     (./software + "/josh's_mass.nix")
     ./users.nix
   ];
@@ -43,6 +44,8 @@
     sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
     musicAssistant.enable = lib.mkDefault false;
+    dataDrive.server.enable = lib.mkDefault false;
+    dataDrive.client.enable = lib.mkDefault (!config.dataDrive.server.enable);
     joshsMass.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
 
