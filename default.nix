@@ -26,6 +26,7 @@
     ./software/vms.nix
     ./software/home_assistant.nix
     ./software/music_assistant.nix
+    ./software/parakeet_asr.nix
     ./software/data_drive.nix
     ./software/nextcloud.nix
     (./software + "/josh's_mass.nix")
@@ -45,6 +46,7 @@
     sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
     musicAssistant.enable = lib.mkDefault false;
+    parakeetAsr.enable = lib.mkDefault false;
     dataDrive.server.enable = lib.mkDefault false;
     dataDrive.client.enable = lib.mkDefault (!config.dataDrive.server.enable);
     nextcloud.enable = lib.mkDefault false;
