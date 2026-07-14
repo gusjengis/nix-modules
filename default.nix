@@ -25,6 +25,7 @@
     ./software/sunshine.nix
     ./software/vms.nix
     ./software/home_assistant.nix
+    ./software/ble_scale_sync.nix
     ./software/music_assistant.nix
     ./software/parakeet_asr.nix
     ./software/data_drive.nix
@@ -45,6 +46,7 @@
     tailscale.enable = lib.mkDefault true;
     sunshine.enable = lib.mkDefault config.hyprland.enable;
     homeAssistant.enable = lib.mkDefault false;
+    bleScaleSync.enable = lib.mkDefault false;
     musicAssistant.enable = lib.mkDefault false;
     parakeetAsr.enable = lib.mkDefault false;
     dataDrive.server.enable = lib.mkDefault false;
