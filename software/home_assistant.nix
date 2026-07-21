@@ -6,6 +6,18 @@
   ...
 }:
 
+let
+  hacs = pkgs.runCommand "hacs-2.0.5" {
+    src = pkgs.fetchurl {
+      url = "https://github.com/hacs/integration/releases/download/2.0.5/hacs.zip";
+      hash = "sha256-l75rgkpPOOaDcozG3XI2f2uLrQpDQosbO5h6MIet9BM=";
+    };
+    nativeBuildInputs = [ pkgs.unzip ];
+  } ''
+    mkdir -p "$out"
+    unzip "$src" -d "$out"
+  '';
+in
 {
   options = {
     homeAssistant.enable = lib.mkEnableOption "enables hyprland";
@@ -15,7 +27,10 @@
     virtualisation.oci-containers = {
       backend = "podman";
       containers.homeassistant = {
-        volumes = [ "home-assistant:/config" ];
+        volumes = [
+          "home-assistant:/config"
+          "${hacs}:/config/custom_components/hacs:ro"
+        ];
         environment.TZ = "America/Los_Angeles";
         image = "ghcr.io/home-assistant/home-assistant:stable"; # Warning: if the tag does not change, the image will not be updated
         extraOptions = [
