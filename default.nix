@@ -18,6 +18,7 @@
     ./desktop_env/hyprland.nix
     ./desktop_env/gnome.nix
     ./desktop_env/login.nix
+    ./desktop_env/bedtime_lockout.nix
     ./software/nvim.nix
     ./software/git.nix
     ./software/vial.nix
@@ -42,6 +43,7 @@
     login.gnome.enable = lib.mkDefault false;
     gnome.enable = lib.mkDefault false;
     hyprland.enable = lib.mkDefault true;
+    bedtimeLockout.enable = lib.mkDefault (config.hyprland.enable || config.gnome.enable);
     nvim.enable = lib.mkDefault true;
     git.enable = lib.mkDefault true;
     vial.enable = lib.mkDefault true;
