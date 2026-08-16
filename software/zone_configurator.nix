@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -83,6 +84,16 @@ in
           echo "Zone Configurator requires HA_LONG_LIVED_TOKEN in ${cfg.tokenEnvFile}" >&2
           exit 1
         fi
+
+        for _ in {1..120}; do
+          if ${lib.getExe pkgs.curl} --fail --silent --show-error --max-time 2 ${lib.escapeShellArg cfg.homeAssistantUrl} >/dev/null; then
+            exit 0
+          fi
+          ${lib.getExe' pkgs.coreutils "sleep"} 2
+        done
+
+        echo "Timed out waiting for Home Assistant at ${cfg.homeAssistantUrl}" >&2
+        exit 1
       '';
     };
 
