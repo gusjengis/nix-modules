@@ -243,7 +243,7 @@ in
     enable = lib.mkEnableOption "scheduled local input and graphical session lockout";
     startHour = lib.mkOption {
       type = lib.types.ints.between 0 23;
-      default = 22;
+      default = 21;
     };
     endHour = lib.mkOption {
       type = lib.types.ints.between 0 23;
