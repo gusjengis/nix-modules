@@ -31,6 +31,19 @@
         description = "Path to the root-readable Windows SMB credentials file";
       };
     };
+    windowsRdp = {
+      enable = lib.mkEnableOption "autostart and tailnet routing for a Windows VM";
+      vmName = lib.mkOption {
+        type = lib.types.str;
+        default = "win11";
+        description = "libvirt domain name for the Windows VM";
+      };
+      address = lib.mkOption {
+        type = lib.types.str;
+        default = "192.168.122.18";
+        description = "Static IPv4 address advertised to the tailnet";
+      };
+    };
   };
 
   config = lib.mkIf config.virtual-machines.enable {
@@ -104,9 +117,45 @@
     };
 
     networking.firewall.interfaces.virbr0.allowedTCPPorts =
-      lib.mkIf config.virtual-machines.fileSharing.enable [ 445 ];
+      lib.mkIf config.virtual-machines.fileSharing.enable
+        [ 445 ];
 
     boot.supportedFilesystems = lib.mkIf config.virtual-machines.fileSharing.enable [ "cifs" ];
+
+    services.tailscale.useRoutingFeatures = lib.mkIf config.virtual-machines.windowsRdp.enable "server";
+
+    systemd.services.windows-vm-autostart = lib.mkIf config.virtual-machines.windowsRdp.enable {
+      description = "Start the Windows VM";
+      after = [ "libvirtd.service" ];
+      requires = [ "libvirtd.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig.Type = "oneshot";
+      script = ''
+        state="$(${lib.getExe' pkgs.libvirt "virsh"} --connect qemu:///system domstate ${lib.escapeShellArg config.virtual-machines.windowsRdp.vmName})"
+        if [ "$state" != running ]; then
+          ${lib.getExe' pkgs.libvirt "virsh"} --connect qemu:///system start ${lib.escapeShellArg config.virtual-machines.windowsRdp.vmName}
+        fi
+      '';
+    };
+
+    systemd.services.tailscale-advertise-windows-vm =
+      lib.mkIf config.virtual-machines.windowsRdp.enable
+        {
+          description = "Advertise the Windows VM to the tailnet";
+          after = [
+            "tailscaled.service"
+            "tailscale-autoconnect.service"
+            "windows-vm-autostart.service"
+          ];
+          requires = [ "tailscaled.service" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${pkgs.tailscale}/bin/tailscale set --advertise-routes=${config.virtual-machines.windowsRdp.address}/32";
+            Restart = "on-failure";
+            RestartSec = 10;
+          };
+        };
 
     fileSystems."/mnt/windows" = lib.mkIf config.virtual-machines.fileSharing.enable {
       device = "//${config.virtual-machines.fileSharing.windowsAddress}/${config.virtual-machines.fileSharing.windowsShare}";
