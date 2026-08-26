@@ -122,7 +122,7 @@
 
     boot.supportedFilesystems = lib.mkIf config.virtual-machines.fileSharing.enable [ "cifs" ];
 
-    services.tailscale.useRoutingFeatures = lib.mkIf config.virtual-machines.windowsRdp.enable "server";
+    services.tailscale.useRoutingFeatures = lib.mkIf config.virtual-machines.windowsRdp.enable "both";
 
     systemd.services.windows-vm-autostart = lib.mkIf config.virtual-machines.windowsRdp.enable {
       description = "Start the Windows VM";

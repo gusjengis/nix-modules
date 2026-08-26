@@ -53,9 +53,7 @@
         # check if we are already authenticated to tailscale
         status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
         if [ "$status" = "Running" ]; then
-          ${tailscale}/bin/tailscale set --accept-routes=${
-            if config.virtual-machines.windowsRdp.enable then "false" else "true"
-          }
+          ${tailscale}/bin/tailscale set --accept-routes=true
           exit 0
         fi
 
@@ -70,9 +68,7 @@
         fi
 
 
-        ${tailscale}/bin/tailscale up -authkey "$TAILSCALE_AUTH_KEY" --accept-routes=${
-          if config.virtual-machines.windowsRdp.enable then "false" else "true"
-        }
+        ${tailscale}/bin/tailscale up -authkey "$TAILSCALE_AUTH_KEY" --accept-routes=true
         # --ssh --accept-dns=true
       '';
     };

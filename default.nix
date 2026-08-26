@@ -23,6 +23,7 @@
     ./software/git.nix
     ./software/vial.nix
     ./software/tailscale.nix
+    ./software/office_network_drives.nix
     ./software/sunshine.nix
     ./software/vms.nix
     ./software/home_assistant.nix
