@@ -25,6 +25,12 @@ let
             >/dev/null 2>&1 || true
       done < ${stateDir}/scopes
     fi
+    # should prevent the macbook trackpad from being frozen after a thaw
+    for hid_id in $(ls /sys/bus/hid/drivers/magicmouse/ 2>/dev/null | ${pkgs.gnugrep}/bin/grep '^0019:'); do
+      echo -n "$hid_id" | ${pkgs.coreutils}/bin/tee /sys/bus/hid/drivers/magicmouse/unbind >/dev/null 2>&1 || true
+      ${pkgs.coreutils}/bin/sleep 0.5
+      echo -n "$hid_id" | ${pkgs.coreutils}/bin/tee /sys/bus/hid/drivers/magicmouse/bind >/dev/null 2>&1 || true
+    done
 
     if [ -s ${stateDir}/audio ]; then
       while IFS=' ' read -r uid user was_muted; do
