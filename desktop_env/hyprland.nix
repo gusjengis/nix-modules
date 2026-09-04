@@ -46,7 +46,6 @@
       carlito
       commit-mono
       nerd-fonts.meslo-lg
-      helvetica-neue-lt-std
     ];
   };
 }

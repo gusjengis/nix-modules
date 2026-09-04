@@ -178,7 +178,6 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
-      helvetica-neue-lt-std
     ];
     fonts.fontconfig.defaultFonts = {
       serif = [
