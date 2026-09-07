@@ -20,7 +20,6 @@
     environment.systemPackages = with pkgs; [
       xwayland-satellite
       waypipe
-      wofi
     ];
 
     # graphics so remote guis work
