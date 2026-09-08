@@ -33,6 +33,7 @@
     ./software/data_drive.nix
     ./software/nextcloud.nix
     ./software/immich.nix
+    ./software/ultrabridge.nix
     (./software + "/josh's_mass.nix")
     ./users.nix
   ];
@@ -58,6 +59,8 @@
     nextcloud.enable = lib.mkDefault false;
     immich.enable = lib.mkDefault false;
     immich.funnel.enable = lib.mkDefault false;
+    ultrabridge.enable = lib.mkDefault false;
+    ultrabridge.funnel.enable = lib.mkDefault false;
     joshsMass.enable = lib.mkDefault false;
     virtual-machines.enable = lib.mkDefault false;
 
