@@ -8,13 +8,24 @@
 
   options = {
     tailscale.enable = lib.mkEnableOption "enables tailscale";
+    tailscale.advertiseRoutes = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      example = [ "192.168.122.18/32" ];
+      description = ''
+        Subnet routes advertised to the tailnet. Every consumer adds to this
+        single list so the routes are published by one unit; separate units
+        calling `tailscale set --advertise-routes` would overwrite each other.
+      '';
+    };
   };
 
   config = lib.mkIf config.tailscale.enable {
     services.tailscale = {
       enable = true;
       openFirewall = true;
-      useRoutingFeatures = lib.mkDefault "client";
+      useRoutingFeatures =
+        if config.tailscale.advertiseRoutes != [ ] then "both" else lib.mkDefault "client";
     };
 
     environment.systemPackages = with pkgs; [
@@ -71,6 +82,28 @@
         # --ssh --accept-dns=true
       '';
     };
+
+    # single writer for --advertise-routes; consumers append to
+    # tailscale.advertiseRoutes instead of running `tailscale set` themselves
+    systemd.services.tailscale-advertise-routes =
+      lib.mkIf (config.tailscale.advertiseRoutes != [ ])
+        {
+          description = "Advertise subnet routes to the tailnet";
+          after = [
+            "tailscaled.service"
+            "tailscale-autoconnect.service"
+          ];
+          requires = [ "tailscaled.service" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${pkgs.tailscale}/bin/tailscale set --advertise-routes=${
+              lib.concatStringsSep "," config.tailscale.advertiseRoutes
+            }";
+            Restart = "on-failure";
+            RestartSec = 10;
+          };
+        };
 
     # turn on ssh!
     services.openssh = {

@@ -22,6 +22,8 @@
       gnumake
       rustup
       cargo
+      nodejs_24
+      nil
     ];
 
   };

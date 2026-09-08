@@ -77,22 +77,9 @@ in
       options = mountOptions;
     };
 
-    services.tailscale.useRoutingFeatures = lib.mkIf cfg.gateway.enable "both";
-
-    systemd.services.tailscale-advertise-office-drives = lib.mkIf cfg.gateway.enable {
-      description = "Advertise office SMB servers to the tailnet";
-      after = [
-        "tailscaled.service"
-        "tailscale-autoconnect.service"
-      ];
-      requires = [ "tailscaled.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.tailscale}/bin/tailscale set --advertise-routes=10.145.0.15/32,10.145.0.18/32";
-        Restart = "on-failure";
-        RestartSec = 10;
-      };
-    };
+    tailscale.advertiseRoutes = lib.mkIf cfg.gateway.enable [
+      "10.145.0.15/32"
+      "10.145.0.18/32"
+    ];
   };
 }
