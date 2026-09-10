@@ -19,9 +19,14 @@ let
     if [ -s ${stateDir}/scopes ]; then
       while IFS=' ' read -r scope uid user; do
         ${pkgs.systemd}/bin/systemctl thaw "$scope" 2>/dev/null || true
+        # hyprctl is resolved from the user's own profile rather than from
+        # pkgs.hyprland. Hyprland is installed by Home Manager from a personal
+        # fork, so referring to nixpkgs here would both build a second, unused
+        # Hyprland and risk talking to the compositor over a mismatched IPC.
         ${pkgs.util-linux}/bin/runuser -u "$user" -- \
           ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR="/run/user/$uid" \
-            ${pkgs.hyprland}/bin/hyprctl dispatch dpms on \
+            PATH="/home/$user/.nix-profile/bin:/etc/profiles/per-user/$user/bin" \
+            hyprctl dispatch dpms on \
             >/dev/null 2>&1 || true
       done < ${stateDir}/scopes
     fi
@@ -220,9 +225,11 @@ let
               ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ 1 \
               >/dev/null 2>&1 || true
 
+          # See the note on the matching dpms-on call above.
           ${pkgs.util-linux}/bin/runuser -u "$user" -- \
             ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR="/run/user/$uid" \
-              ${pkgs.hyprland}/bin/hyprctl dispatch dpms off \
+              PATH="/home/$user/.nix-profile/bin:/etc/profiles/per-user/$user/bin" \
+              hyprctl dispatch dpms off \
               >/dev/null 2>&1 || true
 
           printf '%s %s %s\n' "$scope" "$uid" "$user" >> ${stateDir}/scopes
